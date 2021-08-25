@@ -227,7 +227,7 @@ def _extract_addrs(sentence, pos_sensitive, umap, truncate_pos=True, new_entry_w
 
 
 def _fill_adcode(adcode):
-    return '{:0<12s}'.format(adcode)
+    return '{:0<6s}'.format(adcode)
 
 
 def adcode_name(part_adcode: str):

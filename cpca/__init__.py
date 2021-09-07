@@ -6,7 +6,7 @@ from .structures import AddrMap, Pca
 from .structures import P, C, A
 from .matcher import Matcher
 
-VERSION = (0, 5, 5)
+VERSION = (0, 5, 6)
 
 __version__ = ".".join([str(x) for x in VERSION])
 

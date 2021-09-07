@@ -37,7 +37,10 @@ class Matcher:
         "广西壮族自治区": "广西",
         "西藏自治区": "西藏",
         "新疆维吾尔自治区": "新疆",
-        "宁夏回族自治区": "宁夏"
+        "宁夏回族自治区": "宁夏",
+        "中国澳门": ["澳门", "澳门特别行政区"],
+        "中国香港": ["香港", "香港特别行政区"],
+        "中国台湾": ["台湾", "台湾省"],
     }
 
     def __init__(self, stop_re):
@@ -51,7 +54,10 @@ class Matcher:
         abbr_name = self._abbr_name(addr_info.name)
         # 地址名与简写共享一个list
         share_list = []
-        self.ac.add_word(abbr_name, (abbr_name, share_list))
+        abbr_name = abbr_name if isinstance(abbr_name, list) else [abbr_name]
+        for name in abbr_name:
+            self.ac.add_word(name, (name, share_list))
+
         self.ac.add_word(addr_info.name, (addr_info.name, share_list))
         return abbr_name, share_list
 

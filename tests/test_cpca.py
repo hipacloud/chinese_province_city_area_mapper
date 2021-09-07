@@ -24,20 +24,35 @@ def assert_addr(addr_df: pd.DataFrame, pos_sensitive=False):
     _assert_line(addr_df, pos_sensitive, 7, "贵州省", "黔南布依族苗族自治州", "长顺县", "长寨街道和平中路28号", "522729", 0, 3, 13)
     _assert_line(addr_df, pos_sensitive, 8, "宁夏回族自治区", None, None, "", "640000", 0, -1, -1)
     _assert_line(addr_df, pos_sensitive, 9, "江苏省", "淮安市", None, "市辖区", "320800", -1, 0, -1)
-    _assert_line(addr_df, pos_sensitive, 10, None, None, None, None, None, -1, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 10, "中国香港", None, None, "西安长安一路", "810000", 0, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 11, "中国台湾", None, None, "", "710000", 2, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 12, "中国澳门", None, None, "九龙", "820000", 0, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 13, "中国香港", None, None, "九龙", "810000", 0, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 14, "中国澳门", None, None, "", "820000", 0, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 15, "中国台湾", None, None, "", "710000", 0, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 16, None, None, None, None, None, -1, -1, -1)
 
 
 def test_transform():
-    addr_list = ["徐汇区虹漕路461号58号楼5楼", "泉州市洛江区万安塘西工业区", "福建省鼓楼区鼓楼医院",
-                 "天津市",
-                 "我家的地址是江苏淮安清江浦区人民路111号",
-                 '我家的地址是江苏淮安清江浦区上海路111号',
-                 "上海市浦东新区东明路街道三林路15号",
-                 "贵州省黔南布依族苗族自治州长顺县长寨街道和平中路28号",
-                 "宁夏",
-                 "淮安市市辖区",
-                 # 测试错误数据
-                 32323]
+    addr_list = [
+        "徐汇区虹漕路461号58号楼5楼",
+        "泉州市洛江区万安塘西工业区",
+        "福建省鼓楼区鼓楼医院",
+        "天津市",
+        "我家的地址是江苏淮安清江浦区人民路111号",
+        '我家的地址是江苏淮安清江浦区上海路111号',
+        "上海市浦东新区东明路街道三林路15号",
+        "贵州省黔南布依族苗族自治州长顺县长寨街道和平中路28号",
+        "宁夏",
+        "淮安市市辖区",
+        "香港西安长安一路",
+        "你好台湾",
+        "澳门九龙",
+        "香港特别行政区九龙",
+        "澳门特别行政区",
+        "台湾省",
+        32323
+    ]
     transed = cpca.transform(addr_list)
     assert_addr(transed)
 
@@ -77,7 +92,7 @@ def test_umap():
 #     _assert_line(addr_df, True, 1, "福建省", "泉州市", "洛江区", "", "350504", -1, 21, 24)
 
 
-def mock_map(monkeypatch, attrname, return_value, is_contain = True, is_unique_value = True):
+def mock_map(monkeypatch, attrname, return_value, is_contain=True, is_unique_value=True):
     mock_map = MagicMock()
     mock_map.__contains__.return_value = is_contain
     mock_map.get_value.return_value = return_value
@@ -86,10 +101,10 @@ def mock_map(monkeypatch, attrname, return_value, is_contain = True, is_unique_v
     return mock_map
 
 
-def _dict2addr_map(mydict, valuedict = {}, is_unique_value = True):
+def _dict2addr_map(mydict, valuedict={}, is_unique_value=True):
     mock_map = MagicMock()
 
-    mock_map.get_full_name.side_effect  = lambda key: mydict[key]
+    mock_map.get_full_name.side_effect = lambda key: mydict[key]
     mock_map.get_value.side_effect = lambda key, pca: valuedict[key]
 
     mock_map.__contains__.side_effect = lambda key: key in mydict
@@ -108,7 +123,3 @@ def _assert_line(addr_df, pos_sensitive, linenum, province, city, area, addr, ad
         assert addr_df.loc[linenum, cpca._PROVINCE_POS] == province_pos
         assert addr_df.loc[linenum, cpca._CITY_POS] == city_pos
         assert addr_df.loc[linenum, cpca._COUNTY_POS] == area_pos
-
-
-if __name__ == '__main__':
-    test_transform_text_with_addrs()

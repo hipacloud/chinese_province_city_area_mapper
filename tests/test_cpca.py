@@ -32,7 +32,9 @@ def assert_addr(addr_df: pd.DataFrame, pos_sensitive=False):
     _assert_line(addr_df, pos_sensitive, 15, "中国台湾", None, None, "", "710000", 0, -1, -1)
     _assert_line(addr_df, pos_sensitive, 16, "湖北省", "仙桃市", None, "", "429004", 0, 2, -1)
     _assert_line(addr_df, pos_sensitive, 17, "湖北省", "神农架林区", None, "", "429021", 0, 2, -1)
-    _assert_line(addr_df, pos_sensitive, 18, None, None, None, None, None, -1, -1, -1)
+    _assert_line(addr_df, pos_sensitive, 18, "海南省", "五指山市", None, "", "469001", 0, 2, -1)
+    _assert_line(addr_df, pos_sensitive, 19, "新疆维吾尔自治区", "石河子市", None, "", "659001", 0, 2, -1)
+    _assert_line(addr_df, pos_sensitive, 20, None, None, None, None, None, -1, -1, -1)
 
 
 def test_transform():
@@ -55,6 +57,8 @@ def test_transform():
         "台湾省",
         "湖北仙桃",
         "湖北神农架林区",
+        "海南五指山",
+        "新疆石河子",
         32323
     ]
     transed = cpca.transform(addr_list)

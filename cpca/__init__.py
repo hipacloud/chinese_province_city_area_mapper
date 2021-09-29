@@ -6,7 +6,7 @@ from .structures import AddrMap, Pca
 from .structures import P, C, A
 from .matcher import Matcher
 
-VERSION = (0, 5, 7)
+VERSION = (0, 5, 8)
 
 __version__ = ".".join([str(x) for x in VERSION])
 __version__ = f"{__version__}-099dcaa"
@@ -34,8 +34,13 @@ _POS_KEY = {
 rank2name = [_PROVINCE, _CITY, _COUNTY]
 rank2pos_key = [_PROVINCE_POS, _CITY_POS, _COUNTY_POS]
 
-# 需要当作市处理的地级市。 目前包括：湖北省仙桃市、潜江市、天门市、神农架林区
-_COUNTY_AS_CITY = ["429004", "429005", "429006", "429021"]
+# 需要当作市处理的地级市
+DISTRICT_AS_CITY = [
+    "429004", "429005", "429006", "429021",  # 湖北省仙桃市、潜江市、天门市、神农架林区
+    "469001", "469002", "469005", "469006", "469007", "469021", "469022", "469023",
+    "469024", "469025", "469026", "469027", "469028", "469029", "469030",  # 海南省 特殊城市
+    "659001", "659002", "659003", "659004", "659005", "659006", "659007", "659008", "659009", "659010"  # 新疆 特殊城市
+]
 
 
 class AddrInfo:
@@ -51,7 +56,7 @@ class AddrInfo:
         self.longitude = longitude
         self.latitude = latitude
 
-        if self.adcode in _COUNTY_AS_CITY:
+        if self.adcode in DISTRICT_AS_CITY:
             self.rank = AddrInfo.RANK_CITY
         elif self.adcode.endswith("0000"):  # rank 代表行政区划级别 0: 省 1: 市 2: 县
             self.rank = AddrInfo.RANK_PROVINCE
@@ -241,7 +246,7 @@ def adcode_name(part_adcode: str):
 
 
 def update_res_by_adcode(res: dict, adcode: str):
-    if adcode in _COUNTY_AS_CITY:
+    if adcode in DISTRICT_AS_CITY:
         res[_PROVINCE] = adcode_name(adcode[:2])
         res[_CITY] = adcode_name(adcode)
         return

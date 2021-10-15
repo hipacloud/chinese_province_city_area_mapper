@@ -11,3 +11,7 @@
 ## 0.5.8-099dcaa
 * 适配最新 hipa-geo-data 数据
 * 将 [海南，新疆部分特殊城市] 提升为 市
+
+## 0.5.5.post1
+* 版本使用 post release [https://www.python.org/dev/peps/pep-0440/]
+* 新增三个高新区

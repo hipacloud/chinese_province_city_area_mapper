@@ -6,10 +6,11 @@ from .structures import AddrMap, Pca
 from .structures import P, C, A
 from .matcher import Matcher
 
-VERSION = (0, 5, 8)
+VERSION = (0, 5, 5)
+REVISION = 1  # bump up this when update data
 
 __version__ = ".".join([str(x) for x in VERSION])
-__version__ = f"{__version__}-099dcaa"
+__version__ = f"{__version__}.post{REVISION}"
 
 # 结果 dataframe 的列名
 _PROVINCE = "省"
